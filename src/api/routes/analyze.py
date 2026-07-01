@@ -1,15 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
-from slowapi import Limiter
-from slowapi.util import get_remote_address
 from starlette.requests import Request
 
 from src.api.deps import get_guard_pipeline, get_scenarios_map
+from src.api.limiter import limiter
 from src.guards.base import GuardResult
 from src.pipeline.engine import GuardPipeline
 
 router = APIRouter()
-limiter = Limiter(key_func=get_remote_address)
 
 
 class AnalyzeRequest(BaseModel):

@@ -5,9 +5,8 @@ from pathlib import Path
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
-from slowapi.util import get_remote_address
 
 from src.api.deps import (
     get_guard_pipeline,
@@ -15,11 +14,10 @@ from src.api.deps import (
     set_pipeline,
     set_scenarios,
 )
+from src.api.limiter import limiter
 from src.api.routes.analyze import router as analyze_router
 from src.api.routes.scenarios import router as scenarios_router
 from src.pipeline.engine import GuardPipeline, get_pipeline
-
-limiter = Limiter(key_func=get_remote_address)
 
 
 @asynccontextmanager

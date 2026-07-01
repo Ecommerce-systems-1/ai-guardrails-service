@@ -103,8 +103,8 @@ Note: `raw_response` and `guarded_response` are not included in the list respons
 |---------------|-----------------|----------------|-----------------|
 | BLOCK | (not run) | BLOCK | `guarded_response` |
 | ALLOW | BLOCK | BLOCK | `guarded_response` |
-| ALLOW | WARN | WARN | `guarded_response` |
-| WARN | ALLOW | WARN | `guarded_response` |
+| ALLOW | WARN | WARN | `raw_response` |
+| WARN | ALLOW | WARN | `raw_response` |
 | ALLOW | ALLOW | ALLOW | `raw_response` (same as without) |
 
 ## Retention & Compliance
