@@ -25,8 +25,11 @@ limiter = Limiter(key_func=get_remote_address)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     set_pipeline(get_pipeline())
-    raw = json.loads(Path("data/scenarios.json").read_text())["scenarios"]
-    set_scenarios({s["id"]: s for s in raw})
+    try:
+        raw = json.loads(Path("data/scenarios.json").read_text())["scenarios"]
+        set_scenarios({s["id"]: s for s in raw})
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        raise RuntimeError(f"Failed to load scenarios.json: {e}") from e
     yield
 
 

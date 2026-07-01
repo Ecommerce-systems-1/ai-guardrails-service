@@ -1,5 +1,6 @@
 import json
 import pytest
+from pathlib import Path
 from fastapi.testclient import TestClient
 
 from src.api.deps import get_guard_pipeline, get_scenarios_map
@@ -14,7 +15,7 @@ def pipeline():
 
 @pytest.fixture(scope="session")
 def scenarios_map():
-    raw = json.loads(open("data/scenarios.json").read())["scenarios"]
+    raw = json.loads(Path("data/scenarios.json").read_text())["scenarios"]
     return {s["id"]: s for s in raw}
 
 
