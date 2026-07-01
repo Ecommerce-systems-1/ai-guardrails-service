@@ -79,3 +79,36 @@ def test_toxicity_clean_passes():
     result = ToxicityGuard().check_input("Do you have this jacket in a size large?")
     assert result.triggered is False
     assert result.severity == "PASS"
+
+
+from src.guards.off_topic import OffTopicGuard
+from src.guards.competitor import CompetitorMentionGuard
+
+
+# --- OffTopicGuard ---
+
+def test_off_topic_election_blocks():
+    result = OffTopicGuard().check_input("What do you think about the US election results?")
+    assert result.triggered is True
+    assert result.severity == "BLOCK"
+
+
+def test_off_topic_shopping_query_passes():
+    result = OffTopicGuard().check_input("Do you have this coat in size medium?")
+    assert result.triggered is False
+    assert result.severity == "PASS"
+
+
+# --- CompetitorMentionGuard ---
+
+def test_competitor_nike_warns():
+    result = CompetitorMentionGuard().check_input("Do you carry Nike running shoes?")
+    assert result.triggered is True
+    assert result.severity == "WARN"
+    assert any("Nike" in v for v in result.violations)
+
+
+def test_competitor_clean_passes():
+    result = CompetitorMentionGuard().check_input("I need a new pair of running shoes")
+    assert result.triggered is False
+    assert result.severity == "PASS"
