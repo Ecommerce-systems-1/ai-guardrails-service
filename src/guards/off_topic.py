@@ -10,7 +10,7 @@ _KEYWORDS = [
     "collection", "brand", "product", "item", "stock", "available",
     "fit", "sleeve", "waist", "length", "discount", "sale", "coupon",
     "recommend", "suggest", "looking for", "need", "want", "medium",
-    "small", "large", "xl", "xs",
+    "small", "large", "xl", "xs", "your",
 ]
 
 _kw_re = [re.compile(r"\b" + re.escape(kw) + r"\b", re.IGNORECASE) for kw in _KEYWORDS]
