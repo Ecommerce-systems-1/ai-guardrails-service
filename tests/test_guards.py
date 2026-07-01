@@ -112,3 +112,61 @@ def test_competitor_clean_passes():
     result = CompetitorMentionGuard().check_input("I need a new pair of running shoes")
     assert result.triggered is False
     assert result.severity == "PASS"
+
+
+from src.guards.hallucination import HallucinationGuard
+from src.guards.response_length import ResponseLengthGuard
+from src.guards.brand_voice import BrandVoiceGuard
+from src.guards.content_moderation import ContentModerationGuard
+
+
+# --- HallucinationGuard ---
+
+def test_hallucination_electronics_blocks():
+    result = HallucinationGuard().check_output("Our wireless earbuds have 30-hour battery life.")
+    assert result.triggered is True
+    assert result.severity == "BLOCK"
+
+
+def test_hallucination_fashion_passes():
+    result = HallucinationGuard().check_output("Our wool coat comes in oatmeal and midnight blue.")
+    assert result.triggered is False
+
+
+# --- ResponseLengthGuard ---
+
+def test_response_length_over_limit_warns():
+    result = ResponseLengthGuard().check_output("x" * 501)
+    assert result.triggered is True
+    assert result.severity == "WARN"
+
+
+def test_response_length_within_limit_passes():
+    result = ResponseLengthGuard().check_output("x" * 499)
+    assert result.triggered is False
+
+
+# --- BrandVoiceGuard ---
+
+def test_brand_voice_apology_warns():
+    result = BrandVoiceGuard().check_output("I'm sorry to hear that. Unfortunately we can't help.")
+    assert result.triggered is True
+    assert result.severity == "WARN"
+
+
+def test_brand_voice_clean_passes():
+    result = BrandVoiceGuard().check_output("Great news! Your coat ships tomorrow.")
+    assert result.triggered is False
+
+
+# --- ContentModerationGuard ---
+
+def test_content_moderation_toxic_response_blocks():
+    result = ContentModerationGuard().check_output("That's a terrible question and you're an idiot.")
+    assert result.triggered is True
+    assert result.severity == "BLOCK"
+
+
+def test_content_moderation_clean_passes():
+    result = ContentModerationGuard().check_output("We'd love to help you find the perfect outfit!")
+    assert result.triggered is False
