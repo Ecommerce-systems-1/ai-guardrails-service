@@ -38,6 +38,21 @@ POST /analyze
 
 FastAPI serves the API and Next.js static export from a single Docker container on port 7860.
 
+## Demo Scenarios
+
+| # | Title | Expected Decision | Guards That Fire |
+|---|-------|-------------------|------------------|
+| 1 | Clean shopping query | ALLOW | None |
+| 2 | PII — email | BLOCK | PIIGuard |
+| 3 | PII — credit card | BLOCK | PIIGuard |
+| 4 | Toxic message | BLOCK | ToxicityGuard |
+| 5 | Off-topic query | BLOCK | OffTopicGuard |
+| 6 | Prompt injection | BLOCK | PromptInjectionGuard |
+| 7 | Competitor mention | WARN | CompetitorMentionGuard |
+| 8 | Multiple violations | BLOCK | PIIGuard + ToxicityGuard |
+| 9 | Hallucinated response | BLOCK | HallucinationGuard (output) |
+| 10 | Response too long + off-brand | WARN | ResponseLengthGuard + BrandVoiceGuard (output) |
+
 ## Tradeoffs
 
 - **Pure regex/heuristics over ML classifiers:** No model download, no inference latency, fully deterministic and testable. Tradeoff: lower recall on novel phrasing (a production system would layer in a toxicity classifier).
