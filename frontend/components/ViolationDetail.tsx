@@ -26,8 +26,8 @@ export default function ViolationDetail({ result }: Props) {
       <div className="text-xs opacity-75 mt-0.5">{result.details}</div>
       {open && result.violations.length > 0 && (
         <ul className="mt-2 space-y-1">
-          {result.violations.map((v, i) => (
-            <li key={i} className="text-xs font-mono bg-black bg-opacity-30 rounded px-2 py-1">
+          {result.violations.map((v) => (
+            <li key={v} className="text-xs font-mono bg-black bg-opacity-30 rounded px-2 py-1">
               {v}
             </li>
           ))}
