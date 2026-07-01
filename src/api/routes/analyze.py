@@ -86,5 +86,5 @@ def analyze(
         input_analysis=[_to_out(r) for r in input_result.results],
         output_analysis=[_to_out(r) for r in output_result.results],
         without_guardrails=raw_response,
-        with_guardrails=scenario["guarded_response"] if final_decision != "ALLOW" else raw_response,
+        with_guardrails=scenario["guarded_response"] if final_decision == "BLOCK" else raw_response,
     )
